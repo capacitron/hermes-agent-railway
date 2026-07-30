@@ -12,7 +12,7 @@ ENV PATH="/root/.local/bin:$PATH"
 # Pinned upstream revision. Change this one line to update Hermes; the previous
 # value is your rollback. Leave unset (HERMES_REV=main) only if you deliberately
 # want whatever HEAD happens to be at build time.
-ARG HERMES_REV=8fc278207b0f5b25e567966f9615e1b1737f62af
+ARG HERMES_REV=4a798f4bce29302c9e981c877753e083f80fe533
 
 RUN git clone https://github.com/NousResearch/hermes-agent.git /opt/hermes-agent \
     && git -C /opt/hermes-agent checkout --detach "${HERMES_REV}" \
