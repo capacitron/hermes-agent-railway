@@ -9,7 +9,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 ENV PATH="/root/.local/bin:$PATH"
 
-RUN git clone --recurse-submodules https://github.com/NousResearch/hermes-agent.git /opt/hermes-agent
+# Pinned upstream revision. Change this one line to update Hermes; the previous
+# value is your rollback. Leave unset (HERMES_REV=main) only if you deliberately
+# want whatever HEAD happens to be at build time.
+ARG HERMES_REV=8fc278207b0f5b25e567966f9615e1b1737f62af
+
+RUN git clone https://github.com/NousResearch/hermes-agent.git /opt/hermes-agent \
+    && git -C /opt/hermes-agent checkout --detach "${HERMES_REV}" \
+    && git -C /opt/hermes-agent submodule update --init --recursive
 
 WORKDIR /opt/hermes-agent
 RUN uv venv venv --python 3.11 \
