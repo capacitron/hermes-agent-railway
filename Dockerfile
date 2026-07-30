@@ -24,6 +24,11 @@ RUN uv venv venv --python 3.11 \
 
 ENV PATH="/opt/hermes-agent/venv/bin:$PATH"
 
+# yt-dlp backs the YouTube/Bilibili paths in the agent-reach skill, which
+# otherwise documents commands for a binary that isn't here. Verified working
+# from Railway's egress IP (metadata + auto-subs) on 2026-07-30.
+RUN VIRTUAL_ENV=/opt/hermes-agent/venv uv pip install yt-dlp==2026.7.4
+
 RUN mkdir -p /root/.hermes/{cron,sessions,logs,memories,skills,pairing,hooks,image_cache,audio_cache} \
     && cp cli-config.yaml.example /root/.hermes/config.yaml \
     && touch /root/.hermes/.env
